@@ -1,6 +1,6 @@
 async function runExample() {
 
-    var x = new Float32Array( 1, 17 )
+    var x = new Float32Array( 1, 18 )
 
     var x = [];
 
@@ -21,10 +21,10 @@ async function runExample() {
      x[14] = document.getElementById('box15').value;
      x[15] = document.getElementById('box16').value;
      x[16] = document.getElementById('box17').value;
+     x[17] = document.getElementById('box18').value;
    
-     
 
-    let tensorX = new ort.Tensor('float32', x, [1, 17] );
+    let tensorX = new ort.Tensor('float32', x, [1, 18] );
     let feeds = {float_input: tensorX};
 
     let session = await ort.InferenceSession.create('xgboost_house_ort.onnx');
