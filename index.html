@@ -1,85 +1,155 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
-  <script src="./index.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  	<script src="./index.js"></script>
+    
+   	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <title>house Rating </title>
   
   <style>
-      
-      table, th, td {
-           border: 1px solid;
-      }
-      
-      #leftbox {
-                float:left; 
-                width:33%;
-                height:300px;
-      }
-      #middlebox{
-                float:left; 
-                width:33%;
-                height:300px;
-        }
-        #rightbox{
-                float:right;
-                width:33%;
-                height:300px;
-        }
-        h1{
-                color:green;
-                text-align:center;
-        }
-     
-     
-      
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    label {
+      width: 48%;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #predictions {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: white;
+    }
   </style>
 </head>
+
 <body>
-  
-  <h1> House Prediction NN </h1>
-  
-  
-  
-  
-    <div id = "boxes1">
-         
-              
-  <input type="text" id="box1" value="0"> x1 <br/>
-  <input type="text" id="box2" value="0"> x2 <br/>
-  <input type="text" id="box3" value="0"> x3  <br/>
-  <input type="text" id="box4" value="0">x4 <br/>
-  <input type="text" id="box5" value="0" >x5 <br/>
-  <input type="text" id="box6" value="0"> x6 <br/>
-  <input type="text" id="box7" value="0"> x7 <br/>
-  <input type="text" id="box8" value="0"> x8  <br/>
-  <input type="text" id="box9" value="0"> x9 <br/>
-  <input type="text" id="box10" value="0" > x10 <br/>
-  <input type="text" id="box11" value="0"> x11 <br/>
-  <input type="text" id="box12" value="0" > x12 <br/>
-  <input type="text" id="box13" value="0" > x13 <br/>
-  <input type="text" id="box14" value="0" > x14 <br/>
-  <input type="text" id="box15" value="0" > x15 <br/>
-  <input type="text" id="box16" value="0" > x16 <br/>
-  <input type="text" id="box17" value="0" > x17 <br/>
-  <input type="text" id="box10" value="0" > x18 <br/>
 
-    </div> 
-      
-  <div>
-      <input style="background-color:yellow" type="button" value="Run" onclick="runExample()"/>
-   </div>
-  
+  <header>
+    <h1>House Prediction Using XGboost </h1>
+  </header>
 
-        <div id = "boxes2">
-              
-           
-              <h2>Inference </h2>
-              
-               <div id="predictions">
-               </div>
-              
+  <form>
+    <!-- Update IDs and labels accordingly -->
+   
+    
+    <label for="box1">Bedrooms:</label>
+    <input type="text" value="3" id="box1">
+    
+    <label for="box2">Bathroom:</label>
+    <input type="text" value="2.25" id="box2">
+    
+     <label for="box3">Sqft Living:</label>
+    <input type="text" value="2570" id="box3">
+    
+     <label for="box4">Sqft Lot:</label>
+    <input type="text" value="7242" id="box4">
+    
+     <label for="box5">No of Floors:</label>
+    <input type="text" value="2" id="box5">
+    
+     <label for="box6">Waterfront:</label>
+    <input type="text" value="0" id="box6">
+    
+    <label for="box7">View:</label>
+    <input type="text" value="0" id="box7">
+    
+    <label for="box8">Condition of the house:</label>
+    <input type="text" value="3" id="box8">
+    
+    <label for="box9">House Grade:</label>
+    <input type="text" value="7" id="box9">
+    
+    <label for="box10">Sqft Above:</label>
+    <input type="text" value="2170" id="box10">
+    
+    <label for="box11">Sqft Basement:</label>
+    <input type="text" value="400" id="box11">
+    
+    <label for="box12">Year Built:</label>
+    <input type="text" value="1951" id="box12">
+    
+    <label for="box13">Year Renovated:</label>
+    <input type="text" value="1991" id="box13">
+    
+    <label for="box14">Area Zipcode:</label>
+    <input type="text" value="98125" id="box14">
+    
+    <label for="box15">Latitude:</label>
+    <input type="text" value="47.721" id="box15">
+    
+    <label for="box16">Longitude:</label>
+    <input type="text" value="-122.319" id="box16">
+    
+    <label for="box17">Sqft Living 15:</label>
+    <input type="text" value="1690" id="box17">
+    
+    <label for="box18">Sqft Lot 15:</label>
+    <input type="text" value="7639" id="box18">
+    
+     
+    <button type="button" onclick="runExample()">Run Example</button>
+  </form>
 
-        </div>
-  
+  <div id="predictions"></div>
+
 
 </body>
+
 </html>
